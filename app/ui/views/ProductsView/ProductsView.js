@@ -4,7 +4,10 @@ import {Appbar, Card, Button, Paragraph} from 'react-native-paper';
 import {ScrollView} from 'react-native';
 import {ApiService} from '../../../data/services/ApiService';
 import {ProductContext} from '../../providers/ProductProvider';
-import {productsResponse} from '../../../data/actions/ProductActions';
+import {
+  productSelect,
+  productsResponse,
+} from '../../../data/actions/ProductActions';
 import {NumberService} from '../../../data/services/NumberService';
 
 const ViewContainer = styled.SafeAreaView`
@@ -19,11 +22,29 @@ export default function ProductsView(props) {
   const [{productList, selectdProduct}, productDispatch] = useContext(
     ProductContext,
   );
+
   useEffect(() => {
     ApiService.get('products').then((productList) => {
       productDispatch(productsResponse(productList));
     });
   }, []);
+
+  function selectProduct(product) {
+    console.log(selectdProduct);
+    productDispatch(productSelect(product));
+  }
+
+  if (selectdProduct) {
+    return (
+      <ViewContainer>
+        <Appbar.Header>
+          <Appbar.Content title={selectdProduct.name} />
+        </Appbar.Header>
+        <ProductDatail />
+      </ViewContainer>
+    );
+  }
+
   return (
     <ViewContainer>
       <Appbar.Header>
@@ -40,11 +61,11 @@ export default function ProductsView(props) {
             <Card.Title
               title={item.name}
               right={(props) => (
-                <Button onPress={() => alert('teste')}>Adicionar</Button>
+                <Button onPress={() => selectProduct(item)}>Adicionar</Button>
               )}
             />
             <Card.Content>
-              <Paragraph>{item.price}</Paragraph>
+              <Paragraph>R$ {NumberService.currency(item.price)}</Paragraph>
             </Card.Content>
           </ProductCard>
         ))}

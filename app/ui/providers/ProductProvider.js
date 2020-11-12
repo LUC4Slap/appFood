@@ -8,6 +8,7 @@ export default function ProductProvider(props) {
     ProductReducer,
     initialState,
   );
+
   return (
     <ProductContext.Provider value={[productState, productDispatch]}>
       {props.children}

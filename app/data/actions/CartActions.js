@@ -7,16 +7,13 @@ export const cartAddProduct = (value) => ({
   type: CART_ADD_PRODUCT,
   value,
 });
-
-export const cartRemoveProduct = (valeu) => ({
+export const cartRemoveProduct = (value) => ({
   type: CART_REMOVE_PRODUCT,
   value,
 });
-
-export const cartClearProduct = () => ({
+export const cartClear = () => ({
   type: CART_CLEAR,
 });
-
-export const cartShopREquest = () => ({
+export const cartShopRequest = () => ({
   type: CART_SHOP_REQUEST,
 });

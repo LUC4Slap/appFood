@@ -44,7 +44,7 @@ export default function ProductsView(props) {
               )}
             />
             <Card.Content>
-              <Paragraph>{NumberService.currency(item.price)}</Paragraph>
+              <Paragraph>{item.price}</Paragraph>
             </Card.Content>
           </ProductCard>
         ))}

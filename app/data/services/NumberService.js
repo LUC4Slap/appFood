@@ -6,6 +6,6 @@ export const NumberService = {
     //   currency: 'BRL',
     // });
     // return formatter.format(value);
-    return numeral(value).format('0.0[,]00');
+    return 'R$ ' + numeral(value).format('0,0.00');
   },
 };

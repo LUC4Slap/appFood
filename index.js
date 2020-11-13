@@ -11,7 +11,7 @@ const theme = {
   dark: true,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#5AA9E6',
+    primary: '#510D0A',
   },
 };
 export default function Main() {

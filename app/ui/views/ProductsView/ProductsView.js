@@ -1,14 +1,15 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import styled from 'styled-components/native';
 import {Appbar, Card, Button, Paragraph} from 'react-native-paper';
 import {ScrollView} from 'react-native';
 import {ApiService} from '../../../data/services/ApiService';
 import {ProductContext} from '../../providers/ProductProvider';
 import {
-  productSelect,
   productsResponse,
+  productSelect,
 } from '../../../data/actions/ProductActions';
 import {NumberService} from '../../../data/services/NumberService';
+import ProductDetail from '../ProductDetail/ProductDetail';
 
 const ViewContainer = styled.SafeAreaView`
   flex: 1;
@@ -19,28 +20,28 @@ const ProductCard = styled(Card)`
 `;
 
 export default function ProductsView(props) {
-  const [{productList, selectdProduct}, productDispatch] = useContext(
+  const [{productList, selectedProduct}, productDispatch] = useContext(
     ProductContext,
   );
 
   useEffect(() => {
-    ApiService.get('products').then((productList) => {
-      productDispatch(productsResponse(productList));
-    });
+    ApiService.get('products').then((productList) =>
+      productDispatch(productsResponse(productList)),
+    );
   }, []);
 
   function selectProduct(product) {
-    console.log(selectdProduct);
     productDispatch(productSelect(product));
   }
 
-  if (selectdProduct) {
+  if (selectedProduct) {
     return (
       <ViewContainer>
         <Appbar.Header>
-          <Appbar.Content title={selectdProduct.name} />
+          <Appbar.BackAction onPress={() => selectProduct(null)} />
+          <Appbar.Content title={selectedProduct.name} />
         </Appbar.Header>
-        <ProductDatail />
+        <ProductDetail />
       </ViewContainer>
     );
   }
@@ -53,19 +54,15 @@ export default function ProductsView(props) {
       <ScrollView>
         {productList.map((item) => (
           <ProductCard key={item.id}>
-            <Card.Cover
-              source={{
-                uri: item.picture,
-              }}
-            />
+            <Card.Cover source={{uri: item.picture}} />
             <Card.Title
               title={item.name}
               right={(props) => (
-                <Button onPress={() => selectProduct(item)}>Adicionar</Button>
+                <Button onPress={() => selectProduct(item)}>Selecionar</Button>
               )}
             />
             <Card.Content>
-              <Paragraph>R$ {NumberService.currency(item.price)}</Paragraph>
+              <Paragraph>{NumberService.currency(item.price)}</Paragraph>
             </Card.Content>
           </ProductCard>
         ))}
